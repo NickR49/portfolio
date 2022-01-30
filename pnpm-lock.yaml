@@ -5,6 +5,7 @@ specifiers:
   '@lukeed/uuid': ^2.0.0
   '@sveltejs/adapter-auto': next
   '@sveltejs/kit': next
+  '@sveltejs/pancake': ^0.0.18
   '@types/cookie': ^0.4.1
   '@typescript-eslint/eslint-plugin': ^5.10.1
   '@typescript-eslint/parser': ^5.10.1
@@ -27,6 +28,7 @@ specifiers:
 dependencies:
   '@fontsource/fira-mono': 4.5.1
   '@lukeed/uuid': 2.0.0
+  '@sveltejs/pancake': 0.0.18
   cookie: 0.4.1
 
 devDependencies:
@@ -199,6 +201,12 @@ packages:
       - stylus
       - supports-color
     dev: true
+
+  /@sveltejs/pancake/0.0.18:
+    resolution: {integrity: sha512-vnpKn+sHE0yvw/6x4juF9EoDS8iYC5JNIVtRgclA37rfxdnIpvbVxStiZ5/gWncjERN4jtSpTAplS1zCARCBXA==}
+    dependencies:
+      yootils: 0.0.16
+    dev: false
 
   /@sveltejs/vite-plugin-svelte/1.0.0-next.36_svelte@3.46.3+vite@2.7.13:
     resolution: {integrity: sha512-X7lTiioTGC3ri5M299fxc2dimuKU7f22zTXcmD+NrF+fO9/b7YNfLeQQwWV7Tvv9REysMlR4G2HQF6+lY62p/Q==}
@@ -2042,3 +2050,7 @@ packages:
     resolution: {integrity: sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==}
     engines: {node: '>= 6'}
     dev: true
+
+  /yootils/0.0.16:
+    resolution: {integrity: sha512-aIVecm5ucOzwhtKbl0zkfg0ZSOUR9c2da0k8cIc9umjjzkvVCWUUX/UHZ1CLPsv4wmJLqt0aWeLB7p9n9JDwYQ==}
+    dev: false

@@ -1,0 +1,24 @@
+{
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"[typescript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[svelte]": {
+		"editor.defaultFormatter": "svelte.svelte-vscode"
+	},
+	"editor.formatOnSave": true,
+	"editor.tabSize": 2,
+	"files.exclude": {
+		"**/.svelte-kit": true
+	},
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": true
+	},
+	"workbench.colorCustomizations": {
+		"titleBar.activeForeground": "#000",
+		"titleBar.inactiveForeground": "#000000CC",
+		"titleBar.activeBackground": "#d49319",
+		"titleBar.inactiveBackground": "#d49319CC"
+	},
+	"svelte.enable-ts-plugin": true
+}
