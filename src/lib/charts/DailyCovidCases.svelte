@@ -1,19 +1,6 @@
 <script context="module" lang="ts">
 	import * as Pancake from '@sveltejs/pancake';
 
-	const points = [
-		{ x: 0, y: 0 },
-		{ x: 1, y: 1 },
-		{ x: 2, y: 4 },
-		{ x: 3, y: 9 },
-		{ x: 4, y: 16 },
-		{ x: 5, y: 25 },
-		{ x: 6, y: 36 },
-		{ x: 7, y: 49 },
-		{ x: 8, y: 64 },
-		{ x: 9, y: 81 },
-		{ x: 10, y: 100 }
-	];
 	// https://api.stats.govt.nz/opendata/v1/Covid-19Indicators/Observations?$filter=ResourceID%20eq%20'CPCOV2'&$select=Period,Label1,Value&$orderby=Period,Label1
 	interface Record {
 		Period: string;
@@ -116,15 +103,20 @@
 	function daysSinceEpoch(date: string) {
 		return new Date(date).valueOf() / millisInDay;
 	}
-	const points2 = records
+	// let closest: Point;
+	interface Point {
+		x: number;
+		y: number;
+	}
+	const points: Point[] = records
 		.filter((record) => record.Label1 === 'Active')
 		.map((record) => ({ x: daysSinceEpoch(record.Period), y: record.Value }));
 
-	let x1 = points2[0].x;
-	let x2 = points2[0].x;
-	const y1 = 0;
-	let y2 = 0;
-	points2.forEach((point) => {
+	let x1 = +Infinity;
+	let x2 = -Infinity;
+	let y1 = 0;
+	let y2 = -Infinity;
+	points.forEach((point) => {
 		if (point.x < x1) {
 			x1 = point.x;
 		}
@@ -148,6 +140,10 @@
 <p>y1: {y1}</p>
 <p>y2: {y2}</p> -->
 
+<!-- <p>
+	closest: {closest ? `${closest.x}, ${closest.y}` : 'N/A'}
+</p> -->
+
 <div class="chart">
 	<Pancake.Chart {x1} {x2} {y1} {y2}>
 		<Pancake.Box {x1} {x2} {y2}>
@@ -163,16 +159,31 @@
 		</Pancake.Grid>
 
 		<Pancake.Svg>
-			<Pancake.SvgLine data={points2} let:d>
+			<Pancake.SvgLine data={points} let:d>
 				<path class="data" {d} />
 			</Pancake.SvgLine>
 		</Pancake.Svg>
+
+		<Pancake.Quadtree data={points} x={(d) => d.x} y={(d) => d.y} let:closest>
+			{#if closest}
+				<Pancake.Point x={closest.x} y={closest.y}>
+					<span class="annotation-point" />
+					<div
+						class="annotation"
+						style="transform: translate(-{100 * ((closest.x - x1) / (x2 - x1))}%,0)"
+					>
+						<strong>{getDate(closest.x)}</strong>
+						<span>{closest.y} active cases</span>
+					</div>
+				</Pancake.Point>
+			{/if}
+		</Pancake.Quadtree>
 	</Pancake.Chart>
 </div>
 
 <style>
 	.chart {
-		height: 100%;
+		height: 400px;
 		padding: 3em 2em 2em 3em;
 		box-sizing: border-box;
 	}
@@ -207,5 +218,35 @@
 		stroke-linecap: round;
 		stroke-width: 2px;
 		fill: none;
+	}
+
+	.annotation {
+		position: absolute;
+		white-space: nowrap;
+		bottom: 1em;
+		line-height: 1.2;
+		background-color: rgba(255, 255, 255, 0.9);
+		padding: 0.2em 0.4em;
+		border-radius: 2px;
+	}
+
+	.annotation-point {
+		position: absolute;
+		width: 10px;
+		height: 10px;
+		background-color: #ff3e00;
+		border-radius: 50%;
+		transform: translate(-50%, -50%);
+	}
+
+	.annotation strong {
+		display: block;
+		font-size: 20px;
+		text-align: center;
+	}
+
+	.annotation span {
+		display: block;
+		font-size: 14px;
 	}
 </style>

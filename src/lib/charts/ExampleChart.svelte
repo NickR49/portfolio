@@ -40,7 +40,7 @@
 
 <style>
 	.chart {
-		height: 100%;
+		height: 400px;
 		padding: 3em 2em 2em 3em;
 		box-sizing: border-box;
 	}

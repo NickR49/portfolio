@@ -1,6 +1,6 @@
 <script context="module" lang="ts">
 	import ExampleChart from '$lib/charts/ExampleChart.svelte';
-	import DailyCovidChart from '$lib/charts/DailyCovidCases.svelte';
+	import DailyCovidCases from '$lib/charts/DailyCovidCases.svelte';
 </script>
 
 <svelte:head>
@@ -29,15 +29,8 @@
 	<li>- Daily covid cases</li>
 </ul>
 
-<!-- <div class="chart">
-	<ExampleChart />
-</div> -->
-<div class="chart">
-	<DailyCovidChart />
-</div>
+<!-- <ExampleChart /> -->
+<DailyCovidCases />
 
 <style>
-	.chart {
-		height: 250px;
-	}
 </style>
