@@ -32,7 +32,9 @@
 			<path d="M0,0.5 L1,0.5 M0.5,0 L0.5,1" />
 		</svg>
 	</button>
+
 </div>
+<h6 class="text-3xl font-bold underline ">This has Tailwind styling</h6>
 
 <style>
 	.counter {
