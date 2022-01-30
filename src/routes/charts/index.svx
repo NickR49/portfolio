@@ -6,9 +6,22 @@
 	<title>Charts</title>
 </svelte:head>
 
-<div class="charts">
-	<h1>Charts</h1>
-</div>
+
+# Charts
+
+## Subtitle
+
+Some **amazing** _content_.
+
+'Clever quote marks?'
+
+"And some more"
+
+```js
+console.log('Hello, World!')
+```
+
+Find this on [Git Hub](https://github.com/NickR49/portfolio)
 
 <style>
 	.charts {
