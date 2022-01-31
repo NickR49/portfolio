@@ -1,116 +1,9 @@
 <script context="module" lang="ts">
 	import * as Pancake from '@sveltejs/pancake';
+</script>
 
-	// https://api.stats.govt.nz/opendata/v1/Covid-19Indicators/Observations?$filter=ResourceID%20eq%20'CPCOV2'&$select=Period,Label1,Value&$orderby=Period,Label1
-	interface Record {
-		Period: string;
-		Label1: string;
-		Value: number;
-	}
-	const records = [
-		{
-			Period: '2022-01-20',
-			Label1: 'Active',
-			Value: 1037
-		},
-		{
-			Period: '2022-01-20',
-			Label1: 'Deceased',
-			Value: 52
-		},
-		{
-			Period: '2022-01-20',
-			Label1: 'Recovered',
-			Value: 14245
-		},
-		{
-			Period: '2022-01-24',
-			Label1: 'Active',
-			Value: 1133
-		},
-		{
-			Period: '2022-01-24',
-			Label1: 'Deceased',
-			Value: 52
-		},
-		{
-			Period: '2022-01-24',
-			Label1: 'Recovered',
-			Value: 14440
-		},
-		{
-			Period: '2022-01-26',
-			Label1: 'Active',
-			Value: 1190
-		},
-		{
-			Period: '2022-01-26',
-			Label1: 'Deceased',
-			Value: 52
-		},
-		{
-			Period: '2022-01-26',
-			Label1: 'Recovered',
-			Value: 14503
-		},
-		{
-			Period: '2022-01-27',
-			Label1: 'Active',
-			Value: 1241
-		},
-		{
-			Period: '2022-01-27',
-			Label1: 'Deceased',
-			Value: 52
-		},
-		{
-			Period: '2022-01-27',
-			Label1: 'Recovered',
-			Value: 14549
-		},
-		{
-			Period: '2022-01-28',
-			Label1: 'Active',
-			Value: 1320
-		},
-		{
-			Period: '2022-01-28',
-			Label1: 'Deceased',
-			Value: 52
-		},
-		{
-			Period: '2022-01-28',
-			Label1: 'Recovered',
-			Value: 14619
-		},
-		{
-			Period: '2022-01-30',
-			Label1: 'Active',
-			Value: 1497
-		},
-		{
-			Period: '2022-01-30',
-			Label1: 'Deceased',
-			Value: 52
-		},
-		{
-			Period: '2022-01-30',
-			Label1: 'Recovered',
-			Value: 14737
-		}
-	];
-	const millisInDay = 1000 * 60 * 60 * 24;
-	function daysSinceEpoch(date: string) {
-		return new Date(date).valueOf() / millisInDay;
-	}
-	// let closest: Point;
-	interface Point {
-		x: number;
-		y: number;
-	}
-	const points: Point[] = records
-		.filter((record) => record.Label1 === 'Active')
-		.map((record) => ({ x: daysSinceEpoch(record.Period), y: record.Value }));
+<script type="ts">
+	export let points;
 
 	let x1 = +Infinity;
 	let x2 = -Infinity;
@@ -127,7 +20,7 @@
 			y2 = point.y;
 		}
 	});
-
+	const millisInDay = 1000 * 60 * 60 * 24;
 	function getDate(daysSinceEpoch: number) {
 		const date = new Date(daysSinceEpoch * millisInDay);
 		// return date.toLocaleDateString();
@@ -144,6 +37,7 @@
 	closest: {closest ? `${closest.x}, ${closest.y}` : 'N/A'}
 </p> -->
 
+<h2>NZ Covid Cases</h2>
 <div class="chart">
 	<Pancake.Chart {x1} {x2} {y1} {y2}>
 		<Pancake.Box {x1} {x2} {y2}>
@@ -182,6 +76,9 @@
 </div>
 
 <style>
+	h2 {
+		text-align: center;
+	}
 	.chart {
 		height: 400px;
 		padding: 3em 2em 2em 3em;

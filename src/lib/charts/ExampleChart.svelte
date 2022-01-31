@@ -16,6 +16,7 @@
 	];
 </script>
 
+<h2>Example Chart</h2>
 <div class="chart">
 	<Pancake.Chart x1={0} x2={10} y1={0} y2={100}>
 		<Pancake.Box x2={10} y2={100}>
@@ -39,6 +40,9 @@
 </div>
 
 <style>
+	h2 {
+		text-align: center;
+	}
 	.chart {
 		height: 400px;
 		padding: 3em 2em 2em 3em;

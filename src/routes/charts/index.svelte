@@ -1,6 +1,49 @@
 <script context="module" lang="ts">
 	import ExampleChart from '$lib/charts/ExampleChart.svelte';
 	import DailyCovidCases from '$lib/charts/DailyCovidCases.svelte';
+
+	/** @type {import('@sveltejs/kit').Load} */
+	export async function load({ fetch }) {
+		const url = `/charts/data.json`;
+		const res = await fetch(url);
+		if (res.ok) {
+			return {
+				props: {
+					chartData: await res.json()
+				}
+			};
+		}
+		return {
+			status: res.status,
+			error: new Error(`Could not load ${url}`)
+		};
+	}
+</script>
+
+<script type="ts">
+	interface Record {
+		Period: string;
+		Label1: string;
+		Value: number;
+	}
+	interface Response {
+		'@odata.context': string;
+		value: Record[];
+	}
+	export let chartData: Response;
+
+	const millisInDay = 1000 * 60 * 60 * 24;
+	function daysSinceEpoch(date: string) {
+		return new Date(date).valueOf() / millisInDay;
+	}
+
+	interface Point {
+		x: number;
+		y: number;
+	}
+	const points: Point[] = chartData.value
+		.filter((record) => record.Label1 === 'Active')
+		.map((record) => ({ x: daysSinceEpoch(record.Period), y: record.Value }));
 </script>
 
 <svelte:head>
@@ -12,10 +55,11 @@
 <h2>Interesting Chart Candidates</h2>
 
 <ul>
-	<li>- Vaccinated vs unvaccinated hospitalisation rates</li>
 	<li>- Daily covid cases</li>
-	<li>- Hospitalisation across age ranges for a time period - vaxxed vs unvaxxed (Aust and NZ)</li>
+	<li>- Hospitalisation across age ranges for a time period - vaxxed vs unvaxxed (NSW and NZ)</li>
 </ul>
+
+<br />
 
 <h2>Data Sources</h2>
 
@@ -23,14 +67,16 @@
 	<li>
 		- <a
 			href="https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-data-and-statistics/covid-19-vaccine-data"
-			>Vaccine Data</a
+			>MOH Vaccine Data</a
 		>
 	</li>
-	<li>- Daily covid cases</li>
+	<li>- <a href="https://api.stats.govt.nz/">Stats NZ</a></li>
 </ul>
 
+<br />
+
 <!-- <ExampleChart /> -->
-<DailyCovidCases />
+<DailyCovidCases {points} />
 
 <style>
 </style>
