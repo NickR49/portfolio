@@ -1,6 +1,6 @@
 <script context="module" lang="ts">
 	import ExampleChart from '$lib/charts/ExampleChart.svelte';
-	import DailyCovidCases from '$lib/charts/DailyCovidCases.svelte';
+	import CumulativeCovidCases from '$lib/charts/CumulativeCovidCases.svelte';
 
 	/** @type {import('@sveltejs/kit').Load} */
 	export async function load({ fetch }) {
@@ -23,7 +23,7 @@
 <script type="ts">
 	interface Record {
 		Period: string;
-		Label1: string;
+		Label1: 'Active' | 'Recovered' | 'Deceased';
 		Value: number;
 	}
 	interface Response {
@@ -40,10 +40,13 @@
 	interface Point {
 		x: number;
 		y: number;
+		label: 'Active' | 'Recovered' | 'Deceased';
 	}
-	const points: Point[] = chartData.value
-		.filter((record) => record.Label1 === 'Active')
-		.map((record) => ({ x: daysSinceEpoch(record.Period), y: record.Value }));
+	const points: Point[] = chartData.value.map((record) => ({
+		x: daysSinceEpoch(record.Period),
+		y: record.Value,
+		label: record.Label1
+	}));
 </script>
 
 <svelte:head>
@@ -59,6 +62,11 @@
 	<li>- Hospitalisation across age ranges for a time period - vaxxed vs unvaxxed (NSW and NZ)</li>
 </ul>
 
+<br /><br />
+
+<!-- <ExampleChart /> -->
+<CumulativeCovidCases {points} />
+
 <br />
 
 <h2>Data Sources</h2>
@@ -72,11 +80,6 @@
 	</li>
 	<li>- <a href="https://api.stats.govt.nz/">Stats NZ</a></li>
 </ul>
-
-<br />
-
-<!-- <ExampleChart /> -->
-<DailyCovidCases {points} />
 
 <style>
 </style>
