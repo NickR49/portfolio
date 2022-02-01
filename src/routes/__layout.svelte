@@ -1,12 +1,20 @@
 <script lang="ts">
 	import Header from '$lib/header/Header.svelte';
 	import '../app.css';
+	import { navigating } from '$app/stores';
+	import { loading } from '$lib/store/loading';
+	import Spinner from '$lib/loaders/Spinner.svelte';
+
+	$: $loading = !!$navigating;
 </script>
 
 <Header />
 
 <main>
 	<slot />
+	{#if $loading}
+		<Spinner />
+	{/if}
 </main>
 
 <footer>

@@ -59,7 +59,7 @@
 
 <ul>
 	<li>- Daily covid cases</li>
-	<li>- Hospitalisation across age ranges for a time period - vaxxed vs unvaxxed (NSW and NZ)</li>
+	<li>- Hospitalisation for age ranges - vaxxed vs unvaxxed (<a href="https://www.theguardian.com/news/datablog/ng-interactive/2022/jan/28/the-simple-numbers-every-government-should-use-to-fight-anti-vaccine-misinformation">NSW</a> example)</li>
 </ul>
 
 <br /><br />
