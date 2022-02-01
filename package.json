@@ -1,6 +1,7 @@
 {
 	"name": "portfolio",
 	"version": "0.0.1",
+	"license": "MIT",
 	"scripts": {
 		"dev": "svelte-kit dev -p 3002",
 		"build": "svelte-kit build",

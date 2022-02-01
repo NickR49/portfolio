@@ -20,5 +20,8 @@
 		"titleBar.activeBackground": "#d49319",
 		"titleBar.inactiveBackground": "#d49319CC"
 	},
-	"svelte.enable-ts-plugin": true
+	"svelte.enable-ts-plugin": true,
+	"files.associations": {
+		"*.svx": "md"
+	}
 }
