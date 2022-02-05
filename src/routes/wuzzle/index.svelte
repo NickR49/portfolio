@@ -5,6 +5,7 @@
 	import { nonSolutions } from '$lib/wuzzle/nonSolutions';
 	import { solutions } from '$lib/wuzzle/solutions';
 	import BlankRow from '$lib/wuzzle/BlankRow.svelte';
+	import Modal from '$lib/common/Modal.svelte';
 
 	export const dictionary = [...nonSolutions, ...solutions];
 
@@ -51,11 +52,13 @@
 						guessIndex++;
 						if (guessWord === word) {
 							gameState = 'WON';
-							alert(`YOU WON IN ${guessIndex} MOVES!!!`);
+							// alert(`YOU WON IN ${guessIndex} MOVE${guessIndex === 1 ? '' : 'S'}!!!`);
+							showWonModal = true;
 						} else {
 							if (guessIndex === 6) {
 								gameState = 'LOST';
-								alert('YOU LOSE!!!');
+								// alert('YOU LOSE!!!');
+								showLostModal = true;
 							}
 						}
 					} else {
@@ -70,6 +73,9 @@
 				}
 		}
 	}
+
+	let showWonModal = false;
+	let showLostModal = false;
 </script>
 
 <svelte:head>
@@ -119,6 +125,19 @@
 	--background="darkgrey"
 	noSwap={['Enter']}
 />
+
+{#if showWonModal}
+	<Modal on:close={() => (showWonModal = false)}>
+		<h2 slot="header">
+			You won in {guessIndex} move{guessIndex === 1 ? '' : 'S'}!!!
+		</h2>
+	</Modal>
+{/if}
+{#if showLostModal}
+	<Modal on:close={() => (showLostModal = false)}>
+		<h2 slot="header">I'm dreadfully sorry but it appears that you lost!!!</h2>
+	</Modal>
+{/if}
 
 <style>
 	.board {

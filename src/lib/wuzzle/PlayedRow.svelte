@@ -38,7 +38,7 @@
 		}
 		// If the letter is elsewhere in the word then check if it's already a direct match
 		if (word.indexOf(guessLetter) > -1) {
-			if (letterDetails[index].directMatches === letterDetails[index].occurrencesInWord) {
+			if (letterDetails[index]?.directMatches === letterDetails[index]?.occurrencesInWord) {
 				return 'grey';
 			}
 			return 'yellow';
