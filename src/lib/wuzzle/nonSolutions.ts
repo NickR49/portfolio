@@ -1,4 +1,4 @@
-export const dictionary: string[] = [
+export const nonSolutions: string[] = [
 	'aahed',
 	'aalii',
 	'aargh',

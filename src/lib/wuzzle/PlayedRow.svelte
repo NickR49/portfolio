@@ -58,7 +58,7 @@
 	.row {
 		display: flex;
 		flex-direction: row;
-		column-gap: 10px;
+		column-gap: var(--letter-gap);
 	}
 	.letter {
 		font-size: xx-large;
