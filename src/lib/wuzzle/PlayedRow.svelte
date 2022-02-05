@@ -50,7 +50,7 @@
 
 <div class="row">
 	{#each guess.split('') as guessLetter, index}
-		<div class="letter {checkLetter(index)}">{guessLetter}</div>
+		<div class="box letter {checkLetter(index)}">{guessLetter}</div>
 	{/each}
 </div>
 
@@ -60,17 +60,20 @@
 		flex-direction: row;
 		column-gap: var(--letter-gap);
 	}
-	.letter {
-		font-size: xx-large;
-		font-weight: 700;
-		color: whitesmoke;
+	.box {
 		border-style: solid;
 		border-width: 2px;
 		border-color: grey;
 		background-color: darkgrey;
 		width: 50px;
 		height: 50px;
+	}
+	.letter {
+		font-size: xx-large;
+		font-weight: 700;
+		text-transform: uppercase;
 		text-align: center;
+		color: whitesmoke;
 	}
 	.green {
 		background-color: darkgreen;

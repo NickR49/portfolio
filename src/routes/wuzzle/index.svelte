@@ -4,37 +4,52 @@
 	import PlayedRow from '$lib/wuzzle/PlayedRow.svelte';
 	import { nonSolutions } from '$lib/wuzzle/nonSolutions';
 	import { solutions } from '$lib/wuzzle/solutions';
+	import BlankRow from '$lib/wuzzle/BlankRow.svelte';
 
 	export const dictionary = [...nonSolutions, ...solutions];
 
-	const word = 'MOIST';
-	const guesses: string[] = ['ROAST', 'TAROT'];
+	const word = 'moist';
+
+	// Guesses
+	const guesses: string[] = [];
+	let guessIndex = 0;
+
+	// Current guess
 	const currentGuess = ['', '', '', '', ''];
-	let guessPosition = 0;
+	let guessLetterIndex = 0;
+
+	$: previousGuesses = guesses.slice(0, guessIndex);
 
 	function handleKeydown(event: any) {
 		// Only show the last pressed letter
 		console.log(event.detail);
 		switch (event.detail) {
 			case 'Backspace':
-				guessPosition--;
-				currentGuess[guessPosition] = '';
+				if (guessLetterIndex > 0) {
+					guessLetterIndex--;
+					currentGuess[guessLetterIndex] = '';
+				}
 				break;
 			case 'Enter':
-				if (guessPosition === 5) {
+				if (guessLetterIndex === 5) {
 					const guessWord = currentGuess.join('').toLowerCase();
-
 					if (dictionary.includes(guessWord)) {
-						alert('Word is in dictionary');
+						// alert(`${guessWord} is in dictionary`);
+						guesses[guessIndex] = guessWord;
+						guessIndex++;
+						guessLetterIndex = 0;
+						for (let i = 0; i < 5; i++) {
+							currentGuess[i] = '';
+						}
 					} else {
 						alert(`'${guessWord}' is not a valid word`);
 					}
 				}
 				break;
 			default:
-				if (guessPosition < 5) {
-					currentGuess[guessPosition] = event.detail;
-					guessPosition++;
+				if (guessLetterIndex < 5) {
+					currentGuess[guessLetterIndex] = event.detail;
+					guessLetterIndex++;
 				}
 		}
 	}
@@ -49,7 +64,7 @@
 <br /><br />
 
 <div class="board">
-	{#each guesses as guess}
+	{#each previousGuesses as guess}
 		<PlayedRow {guess} {word} />
 	{/each}
 
@@ -57,12 +72,21 @@
 
 	<div class="row">
 		{#each currentGuess as letter, index}
-			<div class="letter">{letter}</div>
+			<div class="box letter">{letter}</div>
 		{/each}
 	</div>
+
+	{#each Array(5 - guessIndex) as _}
+		<BlankRow />
+	{/each}
 </div>
 
 <br /><br />
+
+<!-- <p>Guess index: {guessIndex}</p>
+<p>Guess letter index: {guessLetterIndex}</p>
+<p>Current guess: {currentGuess.join()}</p>
+<p>Previous guesses: {JSON.stringify(previousGuesses)}</p> -->
 
 <Keyboard
 	layout="wordle"
@@ -85,17 +109,19 @@
 		flex-direction: row;
 		column-gap: var(--letter-gap);
 	}
+	.box {
+		border-style: solid;
+		border-width: 2px;
+		border-color: grey;
+		background-color: #d7d7d7;
+		width: 50px;
+		height: 50px;
+	}
 	.letter {
 		font-size: xx-large;
 		font-weight: 700;
 		text-transform: uppercase;
 		color: white;
-		border-style: solid;
-		border-width: 2px;
-		border-color: grey;
-		background-color: rgb(209, 209, 209);
-		width: 50px;
-		height: 50px;
 		text-align: center;
 	}
 </style>
