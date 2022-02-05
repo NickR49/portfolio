@@ -17,8 +17,8 @@
 	"workbench.colorCustomizations": {
 		"titleBar.activeForeground": "#000",
 		"titleBar.inactiveForeground": "#000000CC",
-		"titleBar.activeBackground": "#d49319",
-		"titleBar.inactiveBackground": "#d49319CC"
+		"titleBar.activeBackground": "#412a77",
+		"titleBar.inactiveBackground": "#412a77CC"
 	},
 	"svelte.enable-ts-plugin": true,
 	"files.associations": {

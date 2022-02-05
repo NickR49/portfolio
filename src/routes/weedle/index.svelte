@@ -1,4 +1,5 @@
 <script type="ts">
+	import Keyboard from 'svelte-keyboard';
 	import CurrentRow from '$lib/weedle/CurrentRow.svelte';
 	import PlayedRow from '$lib/weedle/PlayedRow.svelte';
 
@@ -21,6 +22,10 @@
 
 	<CurrentRow {word} />
 </div>
+
+<br /><br />
+
+<Keyboard layout="wordle" />
 
 <style>
 	.board {
