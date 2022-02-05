@@ -153,7 +153,7 @@
 	{/if}
 </div>
 
-<br />
+<br /><br />
 
 <!-- <p>Guess index: {guessIndex}</p>
 <p>Guess letter index: {guessLetterIndex}</p>

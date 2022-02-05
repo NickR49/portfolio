@@ -35,10 +35,10 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@fontsource/fira-mono": "^4.5.0",
+		"@fontsource/fira-mono": "^4.5.2",
 		"@lukeed/uuid": "^2.0.0",
 		"@sveltejs/pancake": "^0.0.18",
 		"cookie": "^0.4.2",
-		"svelte-keyboard": "^0.3.11"
+		"svelte-keyboard": "^0.3.12"
 	}
 }
