@@ -19,6 +19,8 @@
 	const solutionIndex = daysDiff(new Date('2021-06-20'), new Date());
 	const word = solutions[solutionIndex];
 
+	let gameState: 'PLAYING' | 'WON' | 'LOST' = 'PLAYING';
+
 	// Guesses
 	const guesses: string[] = [];
 	let guessIndex = 0;
@@ -47,8 +49,14 @@
 							currentGuess[i] = '';
 						}
 						guessIndex++;
-						if (guessIndex === 6) {
-							alert('YOU LOSE!!!');
+						if (guessWord === word) {
+							gameState = 'WON';
+							alert(`YOU WON IN ${guessIndex} MOVES!!!`);
+						} else {
+							if (guessIndex === 6) {
+								gameState = 'LOST';
+								alert('YOU LOSE!!!');
+							}
 						}
 					} else {
 						alert(`'${guessWord}' is not a valid word`);
@@ -79,11 +87,17 @@
 
 	<!-- <CurrentRow {word} /> -->
 	{#if guessIndex < 6}
-		<div class="row">
-			{#each currentGuess as letter, index}
-				<div class="box letter">{letter}</div>
-			{/each}
-		</div>
+		{#if gameState === 'PLAYING'}
+			<div class="row">
+				{#each currentGuess as letter, index}
+					<div class="box letter">{letter}</div>
+				{/each}
+			</div>
+		{/if}
+
+		{#if gameState === 'WON' && guessIndex < 6}
+			<BlankRow />
+		{/if}
 
 		{#each Array(5 - guessIndex) as _}
 			<BlankRow />
