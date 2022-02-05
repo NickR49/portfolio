@@ -8,21 +8,27 @@
 
 	export const dictionary = [...nonSolutions, ...solutions];
 
-	const word = 'moist';
+	function daysDiff(date1: Date, date2: Date): number {
+		const millisInDay = 1000 * 60 * 60 * 24;
+		const date1DaysFromEpoch = Math.floor(date1.valueOf() / millisInDay);
+		const date2DaysFromEpoch = Math.floor(date2.valueOf() / millisInDay);
+		return date2DaysFromEpoch - date1DaysFromEpoch;
+	}
+
+	// Look up the word of the day
+	const solutionIndex = daysDiff(new Date('2021-06-20'), new Date());
+	const word = solutions[solutionIndex];
 
 	// Guesses
 	const guesses: string[] = [];
 	let guessIndex = 0;
+	$: previousGuesses = guesses.slice(0, guessIndex);
 
 	// Current guess
 	const currentGuess = ['', '', '', '', ''];
 	let guessLetterIndex = 0;
 
-	$: previousGuesses = guesses.slice(0, guessIndex);
-
 	function handleKeydown(event: any) {
-		// Only show the last pressed letter
-		console.log(event.detail);
 		switch (event.detail) {
 			case 'Backspace':
 				if (guessLetterIndex > 0) {
@@ -36,10 +42,13 @@
 					if (dictionary.includes(guessWord)) {
 						// alert(`${guessWord} is in dictionary`);
 						guesses[guessIndex] = guessWord;
-						guessIndex++;
 						guessLetterIndex = 0;
 						for (let i = 0; i < 5; i++) {
 							currentGuess[i] = '';
+						}
+						guessIndex++;
+						if (guessIndex === 6) {
+							alert('YOU LOSE!!!');
 						}
 					} else {
 						alert(`'${guessWord}' is not a valid word`);
@@ -61,7 +70,7 @@
 
 <h1>Wuzzle</h1>
 
-<br /><br />
+<br />
 
 <div class="board">
 	{#each previousGuesses as guess}
@@ -69,19 +78,20 @@
 	{/each}
 
 	<!-- <CurrentRow {word} /> -->
+	{#if guessIndex < 6}
+		<div class="row">
+			{#each currentGuess as letter, index}
+				<div class="box letter">{letter}</div>
+			{/each}
+		</div>
 
-	<div class="row">
-		{#each currentGuess as letter, index}
-			<div class="box letter">{letter}</div>
+		{#each Array(5 - guessIndex) as _}
+			<BlankRow />
 		{/each}
-	</div>
-
-	{#each Array(5 - guessIndex) as _}
-		<BlankRow />
-	{/each}
+	{/if}
 </div>
 
-<br /><br />
+<br />
 
 <!-- <p>Guess index: {guessIndex}</p>
 <p>Guess letter index: {guessLetterIndex}</p>
