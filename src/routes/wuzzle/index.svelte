@@ -31,8 +31,8 @@
 	const currentGuess = ['', '', '', '', ''];
 	let guessLetterIndex = 0;
 
-	function handleKeydown(event: any) {
-		switch (event.detail) {
+	function handleKeydown(key: string) {
+		switch (key) {
 			case 'Backspace':
 				if (guessLetterIndex > 0) {
 					guessLetterIndex--;
@@ -52,28 +52,68 @@
 						guessIndex++;
 						if (guessWord === word) {
 							gameState = 'WON';
-							// alert(`YOU WON IN ${guessIndex} MOVE${guessIndex === 1 ? '' : 'S'}!!!`);
 							showWonModal = true;
 						} else {
 							if (guessIndex === 6) {
 								gameState = 'LOST';
-								// alert('YOU LOSE!!!');
 								showLostModal = true;
 							}
 						}
 					} else {
-						alert(`'${guessWord}' is not a valid word`);
+						showInvalidWordModal = true;
 					}
 				}
 				break;
 			default:
-				if (guessLetterIndex < 5) {
-					currentGuess[guessLetterIndex] = event.detail;
+				if (/^[a-zA-Z]$/.test(key) && guessLetterIndex < 5) {
+					currentGuess[guessLetterIndex] = key.toLowerCase();
 					guessLetterIndex++;
 				}
 		}
 	}
 
+	function handleWindowKeydown(event: KeyboardEvent) {
+		event.preventDefault();
+		handleKeydown(event.key);
+	}
+
+	function handleKeyboardKeydown(event: any) {
+		handleKeydown(event.detail);
+	}
+
+	let remarkIndex = -1;
+	function wittism() {
+		const guessWord = currentGuess.join('').toLowerCase();
+		const remark = [
+			`That word doesn't appear to be in the dictionary`,
+			`No, not that one either`,
+			`Nice try, perhaps next time . . .`,
+			`Nope, not even close`,
+			`Well, perhaps on planet Xenorff . . . `,
+			`Hmmmmm, where art thou '${guessWord}'?`,
+			`This ain't urban dictionary buddy`,
+			`Yeah nah mate!`,
+			`Perhaps another game might suit you better?`,
+			`Tiddly winks perhaps?`,
+			`I believe there's a Klingon version somewhere else . . .`
+		];
+		remarkIndex = (remarkIndex + 1) % remark.length;
+		return remark[remarkIndex];
+	}
+
+	function userRating() {
+		const scale = [
+			'Genius',
+			'Amazing',
+			'Well done',
+			'Not bad',
+			'Good effort',
+			`Barely adequate I'm afraid`
+		];
+		return scale[guessIndex - 1];
+	}
+
+	let showInvalidWordModal = false;
 	let showWonModal = false;
 	let showLostModal = false;
 </script>
@@ -81,6 +121,8 @@
 <svelte:head>
 	<title>Wuzzle</title>
 </svelte:head>
+
+<svelte:window on:keydown={handleWindowKeydown} />
 
 <h1>Wuzzle</h1>
 
@@ -116,26 +158,40 @@
 <!-- <p>Guess index: {guessIndex}</p>
 <p>Guess letter index: {guessLetterIndex}</p>
 <p>Current guess: {currentGuess.join()}</p>
-<p>Previous guesses: {JSON.stringify(previousGuesses)}</p> -->
+<p>Previous guesses: {JSON.stringify(previousGuesses)}</p>
+<p>Show won modal: {showWonModal}</p>
+<p>Show lost modal: {showLostModal}</p> -->
 
 <Keyboard
 	layout="wordle"
-	on:keydown={handleKeydown}
+	on:keydown={handleKeyboardKeydown}
 	--text-transform="uppercase"
 	--background="darkgrey"
 	noSwap={['Enter']}
+	custom=""
 />
 
+{#if showInvalidWordModal}
+	<Modal on:close={() => (showInvalidWordModal = false)}>
+		<h2 slot="header">{wittism()}</h2>
+	</Modal>
+{/if}
 {#if showWonModal}
 	<Modal on:close={() => (showWonModal = false)}>
+		<h1>
+			{userRating()}
+		</h1>
 		<h2 slot="header">
-			You won in {guessIndex} move{guessIndex === 1 ? '' : 'S'}!!!
+			You won in {guessIndex} move{guessIndex === 1 ? '' : 's'}
+			{#each Array(6 - guessIndex) as _}
+				!
+			{/each}
 		</h2>
 	</Modal>
 {/if}
 {#if showLostModal}
 	<Modal on:close={() => (showLostModal = false)}>
-		<h2 slot="header">I'm dreadfully sorry but it appears that you lost!!!</h2>
+		<h2 slot="header">I'm dreadfully sorry but it appears that you have lost!!!</h2>
 	</Modal>
 {/if}
 
