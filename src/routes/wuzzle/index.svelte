@@ -6,19 +6,16 @@
 	import { solutions } from '$lib/wuzzle/solutions';
 	import BlankRow from '$lib/wuzzle/BlankRow.svelte';
 	import Modal from '$lib/common/Modal.svelte';
+	import { daysBetween } from '$lib/utils/dateUtils';
 
 	export const dictionary = [...nonSolutions, ...solutions];
 
-	function daysDiff(date1: Date, date2: Date): number {
-		const millisInDay = 1000 * 60 * 60 * 24;
-		const date1DaysFromEpoch = Math.floor(date1.valueOf() / millisInDay);
-		const date2DaysFromEpoch = Math.floor(date2.valueOf() / millisInDay);
-		return date2DaysFromEpoch - date1DaysFromEpoch;
-	}
-
 	// Look up the word of the day
-	const solutionIndex = daysDiff(new Date('2021-06-20'), new Date());
+	const solutionIndex = daysBetween(new Date('2021-06-19'), new Date());
 	const word = solutions[solutionIndex];
+
+	// console.log(`solutionIndex: `, solutionIndex);
+	// console.log(`word: `, word);
 
 	let gameState: 'PLAYING' | 'WON' | 'LOST' = 'PLAYING';
 
