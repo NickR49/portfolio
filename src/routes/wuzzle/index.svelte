@@ -86,27 +86,19 @@
 			`No, not that one either`,
 			`Nice try, perhaps next time . . .`,
 			`Nope, not even close`,
-			`Well, perhaps on planet Xenorff . . . `,
 			`Hmmmmm, where art thou '${guessWord}'?`,
 			`This ain't urban dictionary buddy`,
-			`Yeah nah mate!`,
+			`Yeah nah . . .`,
 			`Perhaps another game might suit you better?`,
 			`Tiddly winks perhaps?`,
-			`I believe there's a Klingon version somewhere else . . .`
+			`This is not the Klingon version!`
 		];
 		remarkIndex = (remarkIndex + 1) % remark.length;
 		return remark[remarkIndex];
 	}
 
 	function userRating() {
-		const scale = [
-			'Genius',
-			'Amazing',
-			'Well done',
-			'Not bad',
-			'Good effort',
-			`Barely adequate I'm afraid`
-		];
+		const scale = ['Genius', 'Amazing', 'Well done', 'Not bad', 'Good effort', `Points for trying`];
 		return scale[guessIndex - 1];
 	}
 
