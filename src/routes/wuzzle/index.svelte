@@ -1,12 +1,13 @@
 <script type="ts">
 	import Keyboard from 'svelte-keyboard';
-	import CurrentRow from '$lib/wuzzle/CurrentRow.svelte';
 	import PlayedRow from '$lib/wuzzle/PlayedRow.svelte';
 	import { nonSolutions } from '$lib/wuzzle/nonSolutions';
 	import { solutions } from '$lib/wuzzle/solutions';
 	import BlankRow from '$lib/wuzzle/BlankRow.svelte';
 	import Modal from '$lib/common/Modal.svelte';
 	import { daysBetween } from '$lib/utils/dateUtils';
+	import { playedLettersStore } from '$lib/wuzzle/wuzzleStore';
+	import { onMount } from 'svelte';
 
 	export const dictionary = [...nonSolutions, ...solutions];
 
@@ -40,7 +41,6 @@
 				if (guessLetterIndex === 5) {
 					const guessWord = currentGuess.join('').toLowerCase();
 					if (dictionary.includes(guessWord)) {
-						// alert(`${guessWord} is in dictionary`);
 						guesses[guessIndex] = guessWord;
 						guessLetterIndex = 0;
 						for (let i = 0; i < 5; i++) {
@@ -105,6 +105,10 @@
 	let showInvalidWordModal = false;
 	let showWonModal = false;
 	let showLostModal = false;
+
+	onMount(() => {
+		playedLettersStore.set({});
+	});
 </script>
 
 <svelte:head>
@@ -122,10 +126,10 @@
 		<PlayedRow {guess} {word} />
 	{/each}
 
-	<!-- <CurrentRow {word} /> -->
 	{#if guessIndex < 6}
 		{#if gameState === 'PLAYING'}
 			<div class="row">
+				<!-- <CurrentRow {word} /> -->
 				{#each currentGuess as letter, index}
 					<div class="box letter">{letter}</div>
 				{/each}
@@ -158,6 +162,7 @@
 	--background="darkgrey"
 	noSwap={['Enter']}
 	custom=""
+	keyClass={$playedLettersStore}
 />
 
 {#if showInvalidWordModal}
@@ -211,5 +216,18 @@
 		text-transform: uppercase;
 		color: white;
 		text-align: center;
+	}
+
+	:global(.key.correct) {
+		background-color: var(--correct-color);
+		/* color: pink; */
+	}
+	:global(.key.present) {
+		background-color: var(--present-color);
+		/* color: pink; */
+	}
+	:global(.key.absent) {
+		background-color: var(--absent-color);
+		/* color: pink; */
 	}
 </style>

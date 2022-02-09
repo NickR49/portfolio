@@ -1,4 +1,6 @@
 <script type="ts">
+	import { LetterState, playedLettersStore } from './wuzzleStore';
+
 	export let word: string;
 	export let guess: string;
 
@@ -13,9 +15,32 @@
 		return self.indexOf(value) === index;
 	}
 
+	function storeLetterState(letter: string, state: LetterState) {
+		// console.log(`storeLetterState - letter: ${letter}, state: ${state}`);
+		// Check the existing state of the letter
+		const currentState = $playedLettersStore[letter];
+		let update = false;
+		if (currentState === 'correct') {
+			// do nothing
+		} else if (currentState === 'present' && state === 'correct') {
+			update = true;
+		} else if (currentState === 'absent' && ['present', 'correct'].includes(state)) {
+			update = true;
+		} else if (!currentState) {
+			update = true;
+		}
+
+		if (update) {
+			playedLettersStore.update((playedLetters) => {
+				// console.log(`playedLettersStore: `, { ...playedLetters, letter: state });
+				return { ...playedLetters, [letter]: state };
+			});
+		}
+	}
+
 	// Analysis attempt
-	const letters = guess.split('').filter(onlyUnique);
-	letters.forEach((letter) => {
+	const uniqueLetters = guess.split('').filter(onlyUnique);
+	uniqueLetters.forEach((letter) => {
 		const occurrencesInWord = word.split('').filter((l) => l === letter).length;
 		const directMatches = word.split('').filter((wordLetter, index) => {
 			if (wordLetter === letter && guess.slice(index, index + 1) === letter) {
@@ -30,27 +55,31 @@
 		});
 	});
 
-	function checkLetter(index: number): 'green' | 'yellow' | 'grey' {
+	function getLetterState(index: number): 'correct' | 'present' | 'absent' {
 		const guessLetter = guess.slice(index, index + 1);
-		// If it's a direct match then return green
+		let letterState: LetterState;
+		// If it's a direct match then return correct
 		if (word.slice(index, index + 1) === guessLetter) {
-			return 'green';
+			letterState = 'correct';
 		}
 		// If the letter is elsewhere in the word then check if it's already a direct match
-		if (word.indexOf(guessLetter) > -1) {
+		else if (word.indexOf(guessLetter) > -1) {
 			if (letterDetails[index]?.directMatches === letterDetails[index]?.occurrencesInWord) {
-				return 'grey';
+				letterState = 'absent';
+			} else {
+				letterState = 'present';
 			}
-			return 'yellow';
 		} else {
-			return 'grey';
+			letterState = 'absent';
 		}
+		storeLetterState(guessLetter, letterState);
+		return letterState;
 	}
 </script>
 
 <div class="row">
 	{#each guess.split('') as guessLetter, index}
-		<div class="box letter {checkLetter(index)}">{guessLetter}</div>
+		<div class="box letter {getLetterState(index)}">{guessLetter}</div>
 	{/each}
 </div>
 
@@ -75,13 +104,13 @@
 		text-align: center;
 		color: whitesmoke;
 	}
-	.green {
-		background-color: darkgreen;
+	.correct {
+		background-color: var(--correct-color);
 	}
-	.yellow {
-		background-color: rgb(196, 163, 16);
+	.present {
+		background-color: var(--present-color);
 	}
-	.grey {
-		/* background-color: grey; */
+	.absent {
+		background-color: var(--absent-color);
 	}
 </style>
