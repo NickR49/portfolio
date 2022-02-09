@@ -14,6 +14,7 @@ specifiers:
   eslint: ^8.8.0
   eslint-config-prettier: ^8.3.0
   eslint-plugin-svelte3: ^3.2.1
+  luxon: ^2.3.0
   mdsvex: ^0.10.5
   postcss: ^8.4.6
   prettier: ^2.4.1
@@ -31,6 +32,7 @@ dependencies:
   '@lukeed/uuid': 2.0.0
   '@sveltejs/pancake': 0.0.18
   cookie: 0.4.2
+  luxon: 2.3.0
   svelte-keyboard: 0.4.0
 
 devDependencies:
@@ -1277,6 +1279,11 @@ packages:
     dependencies:
       yallist: 4.0.0
     dev: true
+
+  /luxon/2.3.0:
+    resolution: {integrity: sha512-gv6jZCV+gGIrVKhO90yrsn8qXPKD8HYZJtrUDSfEbow8Tkw84T9OnCyJhWvnJIaIF/tBuiAjZuQHUt1LddX2mg==}
+    engines: {node: '>=12'}
+    dev: false
 
   /magic-string/0.25.7:
     resolution: {integrity: sha512-4CrMT5DOHTDk4HYDlzmwu4FVCcIYI8gauveasrdCu2IKIFOJ3f0v/8MDGJCDL9oD2ppz/Av1b0Nj345H9M+XIA==}

@@ -7,7 +7,7 @@
 	let modal;
 
 	const handle_keydown = (e) => {
-		if (e.key === 'Escape') {
+		if (e.key === 'Escape' || e.key === 'Enter') {
 			close();
 			return;
 		}
@@ -37,13 +37,17 @@
 	}
 </script>
 
-<svelte:window on:keydown={handle_keydown} />
+<svelte:window on:keydown|stopPropagation={handle_keydown} />
 
 <div class="modal-background" on:click={close} />
 
 <div class="modal" role="dialog" aria-modal="true" bind:this={modal}>
 	<!-- svelte-ignore a11y-autofocus -->
-	<button autofocus class="btn" on:click={close}><i class="fa fa-close" /></button>
+	<button autofocus class="focus:outline-none" on:click={close}
+		><span class="text-blue-500 hover:text-blue-700">
+			<i class="fa fa-close" />
+		</span>
+	</button>
 
 	<slot name="header" />
 	<hr />
@@ -77,5 +81,8 @@
 
 	button {
 		display: block;
+		position: absolute;
+		right: 10px;
+		top: 7px;
 	}
 </style>
