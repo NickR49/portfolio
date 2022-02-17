@@ -4,6 +4,13 @@
 	import CumulativeCovidCasesBarChart from '$lib/charts/pancake/CumulativeCovidCasesBarChart.svelte';
 	import Chart from '$lib/charts/layercake/Chart.svelte';
 
+	export interface DateRecord {
+		date: string;
+		active: number;
+		recovered: number;
+		deceased: number;
+	}
+
 	/** @type {import('@sveltejs/kit').Load} */
 	export async function load({ fetch }) {
 		const url = `/charts/data.json`;
@@ -39,6 +46,7 @@
 		return new Date(date).valueOf() / millisInDay;
 	}
 
+	// Pancake data
 	interface Point {
 		x: number;
 		y: number;
@@ -49,6 +57,29 @@
 		y: record.Value,
 		label: record.Label1
 	}));
+
+	// Layercake data
+	type DateRecords = { [date: string]: DateRecord };
+	const dataObject: DateRecords = {};
+	chartData.value.forEach((entry) => {
+		const currentEntry =
+			dataObject[entry.Period] ??
+			(dataObject[entry.Period] = { date: entry.Period, active: 0, recovered: 0, deceased: 0 });
+		switch (entry.Label1) {
+			case 'Active':
+				currentEntry.active = entry.Value;
+				break;
+			case 'Recovered':
+				currentEntry.recovered = entry.Value;
+				break;
+			case 'Deceased':
+				currentEntry.deceased = entry.Value;
+				break;
+		}
+	});
+	// console.log(`dataObject: `, dataObject);
+	const data: (DateRecord | string[])[] = Object.values(dataObject);
+	// console.log(`slice: `, JSON.stringify(data.slice(0, 12)));
 </script>
 
 <svelte:head>
@@ -75,7 +106,7 @@
 <!-- <CumulativeCovidCasesLineChart {points} /> -->
 <!-- <CumulativeCovidCasesBarChart {points} /> -->
 <div class="chart">
-	<Chart />
+	<Chart data={data.slice(0, 100)} />
 </div>
 
 <br />

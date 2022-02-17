@@ -1,4 +1,4 @@
-<script>
+<script type="ts">
 	import { LayerCake, ScaledSvg, Html, flatten, uniques } from 'layercake';
 	import { stack } from 'd3-shape';
 	import { scaleBand, scaleOrdinal } from 'd3-scale';
@@ -9,17 +9,18 @@
 	import AxisX from './AxisX.svelte';
 	import AxisY from './AxisY.svelte';
 	import { fruitOrdinalData } from './fruitOrdinal';
+	import type { DateRecord } from 'src/routes/charts/index.svelte';
 
-	// This example loads csv data as json using @rollup/plugin-dsv
-	// import data from './fruitOrdinal.csv';
-	const data = csvParse(fruitOrdinalData);
+	// const data = csvParse(fruitOrdinalData);
 
-	const xKey = 'year';
+	export let data: (DateRecord | string[])[];
+
+	const xKey = 'date';
 	const yKey = [0, 1];
 	const zKey = 'key';
 
 	const seriesNames = Object.keys(data[0]).filter((d) => d !== xKey);
-	const seriesColors = ['#00e047', '#7ceb68', '#b7f486', '#ecfda5'];
+	const seriesColors = ['#00e047', '#7ceb68', '#b7f486'];
 
 	data.forEach((d) => {
 		seriesNames.forEach((name) => {
@@ -31,6 +32,7 @@
 
 	const series = stackData(data);
 
+	const formatTickX = (d: string) => (d.endsWith('-01') ? d : '');
 	const formatTickY = (d) => format(`.${precisionFixed(d)}s`)(d);
 </script>
 
@@ -51,7 +53,7 @@
 		data={series}
 	>
 		<Html>
-			<AxisX gridlines={false} />
+			<AxisX gridlines={false} formatTick={formatTickX} />
 			<AxisY ticks={4} gridlines={false} formatTick={formatTickY} />
 		</Html>
 		<ScaledSvg>
