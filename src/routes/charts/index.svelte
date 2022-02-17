@@ -1,6 +1,8 @@
 <script context="module" lang="ts">
 	import ExampleChart from '$lib/charts/ExampleChart.svelte';
-	import CumulativeCovidCases from '$lib/charts/CumulativeCovidCases.svelte';
+	import CumulativeCovidCasesLineChart from '$lib/charts/pancake/CumulativeCovidCasesLineChart.svelte';
+	import CumulativeCovidCasesBarChart from '$lib/charts/pancake/CumulativeCovidCasesBarChart.svelte';
+	import Chart from '$lib/charts/layercake/Chart.svelte';
 
 	/** @type {import('@sveltejs/kit').Load} */
 	export async function load({ fetch }) {
@@ -59,19 +61,28 @@
 
 <ul>
 	<li>- Daily covid cases</li>
-	<li>- Hospitalisation for age ranges - vaxxed vs unvaxxed (<a href="https://www.theguardian.com/news/datablog/ng-interactive/2022/jan/28/the-simple-numbers-every-government-should-use-to-fight-anti-vaccine-misinformation">NSW</a> example)</li>
+	<li>
+		- Hospitalisation for age ranges - vaxxed vs unvaxxed (<a
+			href="https://www.theguardian.com/news/datablog/ng-interactive/2022/jan/28/the-simple-numbers-every-government-should-use-to-fight-anti-vaccine-misinformation"
+			>NSW</a
+		> example)
+	</li>
 </ul>
 
 <br /><br />
 
 <!-- <ExampleChart /> -->
-<CumulativeCovidCases {points} />
+<!-- <CumulativeCovidCasesLineChart {points} /> -->
+<!-- <CumulativeCovidCasesBarChart {points} /> -->
+<div class="chart">
+	<Chart />
+</div>
 
 <br />
 
-<!-- <h2>Data Sources</h2> -->
+<h2>Data Sources</h2>
 
-## Data Sources
+<!-- ## Data Sources -->
 
 <!-- *Markdown* __markdown__ -->
 
@@ -91,4 +102,7 @@
 </ul>
 
 <style>
+	.chart {
+		height: 400px;
+	}
 </style>

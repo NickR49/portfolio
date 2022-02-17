@@ -3,6 +3,8 @@
 </script>
 
 <script type="ts">
+	import { parseDate } from '$lib/utils/dateUtils';
+
 	interface Point {
 		x: number;
 		y: number;
@@ -30,9 +32,9 @@
 	const deceasedPoints = points.filter((point) => point.label === 'Deceased');
 	const dayRange = x2 - x1;
 	const millisInDay = 1000 * 60 * 60 * 24;
-	function getDate(daysSinceEpoch: number) {
-		const date = new Date(daysSinceEpoch * millisInDay);
-		return `${date.getMonth() + 1}/${date.getFullYear() - 2000}`;
+	function getDate(daysSinceEpoch: number, format: 'LL/yy' | 'dd/LL/yyyy') {
+		const date = parseDate(new Date(daysSinceEpoch * millisInDay));
+		return date.toFormat(format);
 	}
 </script>
 
@@ -45,7 +47,7 @@
 
 		<Pancake.Grid vertical count={dayRange / 90} let:value>
 			<div class="grid-line vertical" />
-			<span class="x label">{getDate(value)}</span>
+			<span class="x label">{getDate(value, 'LL/yy')}</span>
 		</Pancake.Grid>
 
 		<Pancake.Grid horizontal count={6} let:value let:first>
@@ -74,7 +76,7 @@
 						class="annotation"
 						style="transform: translate(-{100 * ((closest.x - x1) / (x2 - x1))}%,0)"
 					>
-						<strong>{getDate(closest.x)}</strong>
+						<strong>{getDate(closest.x, 'dd/LL/yyyy')}</strong>
 						<span>{closest.y} {closest.label} cases</span>
 					</div>
 				</Pancake.Point>
