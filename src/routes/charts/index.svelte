@@ -6,9 +6,9 @@
 
 	export interface DateRecord {
 		date: string;
-		active: number;
-		recovered: number;
 		deceased: number;
+		recovered: number;
+		active: number;
 	}
 
 	/** @type {import('@sveltejs/kit').Load} */
@@ -64,7 +64,7 @@
 	chartData.value.forEach((entry) => {
 		const currentEntry =
 			dataObject[entry.Period] ??
-			(dataObject[entry.Period] = { date: entry.Period, active: 0, recovered: 0, deceased: 0 });
+			(dataObject[entry.Period] = { date: entry.Period, deceased: 0, recovered: 0, active: 0 });
 		switch (entry.Label1) {
 			case 'Active':
 				currentEntry.active = entry.Value;
@@ -78,7 +78,7 @@
 		}
 	});
 	// console.log(`dataObject: `, dataObject);
-	const data: (DateRecord | string[])[] = Object.values(dataObject);
+	const data: DateRecord[] = Object.values(dataObject);
 	// console.log(`slice: `, JSON.stringify(data.slice(0, 12)));
 </script>
 
@@ -106,7 +106,7 @@
 <!-- <CumulativeCovidCasesLineChart {points} /> -->
 <!-- <CumulativeCovidCasesBarChart {points} /> -->
 <div class="chart">
-	<Chart data={data.slice(0, 100)} />
+	<Chart data={data.slice(500, 600)} />
 </div>
 
 <br />

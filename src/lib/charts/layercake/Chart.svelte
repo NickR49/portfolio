@@ -13,20 +13,25 @@
 
 	// const data = csvParse(fruitOrdinalData);
 
-	export let data: (DateRecord | string[])[];
+	export let data: DateRecord[];
+	console.log(`data: `, data);
 
 	const xKey = 'date';
 	const yKey = [0, 1];
 	const zKey = 'key';
 
+	// ['deceased', 'recovered', 'active']
 	const seriesNames = Object.keys(data[0]).filter((d) => d !== xKey);
-	const seriesColors = ['#00e047', '#7ceb68', '#b7f486'];
+	console.log(`seriesNames: `, seriesNames);
+	const seriesColors = ['black', 'green', 'orange'];
 
 	data.forEach((d) => {
 		seriesNames.forEach((name) => {
 			d[name] = +d[name];
 		});
 	});
+
+	console.log(`uniques: `, uniques(data, xKey));
 
 	const stackData = stack().keys(seriesNames);
 
@@ -44,7 +49,7 @@
 		x={(d) => d.data[xKey]}
 		y={yKey}
 		z={zKey}
-		xScale={scaleBand().paddingInner([0.028]).round(true)}
+		xScale={scaleBand().paddingInner([0.02]).round(true)}
 		xDomain={uniques(data, xKey)}
 		zScale={scaleOrdinal()}
 		zDomain={seriesNames}
