@@ -21,12 +21,12 @@
 	const zKey = 'key';
 
 	// ['deceased', 'recovered', 'active']
-	const seriesNames = Object.keys(data[0]).filter((d) => d !== xKey);
+	const seriesNames = Object.keys(data[0]).filter(d => d !== xKey);
 	console.log(`seriesNames: `, seriesNames);
 	const seriesColors = ['black', 'green', 'orange'];
 
-	data.forEach((d) => {
-		seriesNames.forEach((name) => {
+	data.forEach(d => {
+		seriesNames.forEach(name => {
 			d[name] = +d[name];
 		});
 	});
@@ -38,7 +38,7 @@
 	const series = stackData(data);
 
 	const formatTickX = (d: string) => (d.endsWith('-01') ? d : '');
-	const formatTickY = (d) => format(`.${precisionFixed(d)}s`)(d);
+	const formatTickY = d => format(`.${precisionFixed(d)}s`)(d);
 </script>
 
 <div class="chart-container">
@@ -46,7 +46,7 @@
 		ssr={true}
 		percentRange={true}
 		padding={{ top: 0, right: 0, bottom: 20, left: 20 }}
-		x={(d) => d.data[xKey]}
+		x={d => d.data[xKey]}
 		y={yKey}
 		z={zKey}
 		xScale={scaleBand().paddingInner([0.02]).round(true)}

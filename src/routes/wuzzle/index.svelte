@@ -12,7 +12,7 @@
 	export const dictionary = [...nonSolutions, ...solutions];
 
 	// Look up the word of the day
-	const solutionIndex = daysBetween(new Date('2021-06-19'), new Date());
+	const solutionIndex = daysBetween(new Date('2021-06-17'), new Date());
 	const word = solutions[solutionIndex];
 
 	// console.log(`solutionIndex: `, solutionIndex);
