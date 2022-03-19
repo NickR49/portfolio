@@ -52,7 +52,7 @@
 		y: number;
 		label: 'Active' | 'Recovered' | 'Deceased';
 	}
-	const points: Point[] = chartData.value.map((record) => ({
+	const points: Point[] = chartData.value.map(record => ({
 		x: daysSinceEpoch(record.Period),
 		y: record.Value,
 		label: record.Label1
@@ -61,7 +61,7 @@
 	// Layercake data
 	type DateRecords = { [date: string]: DateRecord };
 	const dataObject: DateRecords = {};
-	chartData.value.forEach((entry) => {
+	chartData.value.forEach(entry => {
 		const currentEntry =
 			dataObject[entry.Period] ??
 			(dataObject[entry.Period] = { date: entry.Period, deceased: 0, recovered: 0, active: 0 });
